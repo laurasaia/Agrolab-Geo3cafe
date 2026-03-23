@@ -53,7 +53,6 @@ Gerenciador de Pacotes: Recomendamos o uv para gerenciar dependências e grupos 
 Serviço | URL | Descrição
 --------|-----|----------
 Geo3Café App | http://localhost:8765 | Interface Solara
-API Docs | http://localhost:8000/docs | Swagger FastAPI
 GeoServer | http://localhost:8080/geoserver | Painel (admin/geoserver)
 
 # Automação no VS Code
