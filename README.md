@@ -45,8 +45,14 @@ Gerenciador de Pacotes: Recomendamos o uv para gerenciar dependências e grupos 
     ```
 4. Popular o Banco de Dados (Primeira execução)
     ```Bash
-    docker compose -f infra/docker-compose.yml exec -T mongo mongorestore --db geo3cafe_db <caminho_para_dump>
+    docker compose -f infra/docker-compose.yml --env-file .env exec -T mongo mongorestore  
+    \ --username=mongoadmin  
+    \ --password=mysecretpassword  
+    \ --authenticationDatabase=admin  
+    \ --drop  
+    \ --archive < mongo_seed/<nome-do-arquivo>.archive
     ```
+    **IMPORTANTE (Dump do mongo):** Adicione o arquivo de dump do banco de dados MongoDB em ./mongo_seed/.
 
 # Acessos Locais (Endpoints)
 

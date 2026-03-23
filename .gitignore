@@ -36,3 +36,6 @@ htmlcov/
 .coverage
 .coverage.*
 coverage.xml
+
+# MongoDB data
+mongo_seed/*
