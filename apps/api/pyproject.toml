@@ -14,5 +14,12 @@ dependencies = [
     "uvicorn[standard]>=0.40.0",
 ]
 
+[dependency-groups]
+dev = [
+    "ruff>=0.15.7",
+    "ty>=0.0.24",
+]
+
 [tool.pytest.ini_options]
 pythonpath = "src"
+
