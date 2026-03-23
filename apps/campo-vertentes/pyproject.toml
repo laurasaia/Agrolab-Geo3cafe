@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling==1.26.3"]
+build-backend = "hatchling.build"
+
+[project]
+name = "campo-vertentes"
+version = "0.1.0"
+description = "Geo3Café solara app for visualizing the Campo das Vertentes region in Brazil."
+requires-python = ">=3.12"
+dependencies = [
+    "anywidget==0.9.21",
+    "branca==0.8.2",
+    "geopandas==1.1.1",
+    "ipyleaflet==0.20.0",
+    "ipywidgets==8.1.8",
+    "numpy==2.3.5",
+    "pandas==2.3.3",
+    "plotly==6.5.0",
+    "python-dotenv==1.2.1",
+    "solara==1.57.3",
+    "starlette<1.0.0"
+]
+
+[tool.hatch.version]
+path = "campo_vertentes/__init__.py"

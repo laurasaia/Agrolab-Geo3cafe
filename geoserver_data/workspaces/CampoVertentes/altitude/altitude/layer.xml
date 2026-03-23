@@ -1,0 +1,17 @@
+<layer>
+  <name>altitude</name>
+  <id>LayerInfoImpl--28a09aed:19b522f0db5:-7fe9</id>
+  <type>RASTER</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--28a09aed:19b522f0db5:-7ffc</id>
+  </defaultStyle>
+  <resource class="coverage">
+    <id>CoverageInfoImpl--28a09aed:19b522f0db5:-7fea</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-12-24 21:21:20.909 UTC</dateCreated>
+  <dateModified>2025-12-24 21:22:49.262 UTC</dateModified>
+</layer>

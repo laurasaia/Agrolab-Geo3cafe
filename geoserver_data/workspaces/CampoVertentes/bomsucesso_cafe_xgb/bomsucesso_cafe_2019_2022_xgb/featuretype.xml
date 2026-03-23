@@ -1,0 +1,82 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--28a09aed:19b522f0db5:-7fa2</id>
+  <name>bomsucesso_cafe_2019_2022_xgb</name>
+  <nativeName>bomsucesso_cafe_2019_2022_xgb</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-d61d83b:19aac2eb7dd:-7fff</id>
+  </namespace>
+  <title>bomsucesso_cafe_2019_2022_xgb</title>
+  <keywords>
+    <string>features</string>
+    <string>bomsucesso_cafe_2019_2022_xgb</string>
+  </keywords>
+  <nativeCRS class="projected">PROJCS[&quot;unknown&quot;, &#xd;
+  GEOGCS[&quot;GCS_unknown&quot;, &#xd;
+    DATUM[&quot;D_Unknown_based_on_GRS80_ellipsoid&quot;, &#xd;
+      SPHEROID[&quot;GRS_1980&quot;, 6378137.0, 298.257222101]], &#xd;
+    PRIMEM[&quot;Greenwich&quot;, 0.0], &#xd;
+    UNIT[&quot;degree&quot;, 0.017453292519943295], &#xd;
+    AXIS[&quot;Longitude&quot;, EAST], &#xd;
+    AXIS[&quot;Latitude&quot;, NORTH]], &#xd;
+  PROJECTION[&quot;Albers_Conic_Equal_Area&quot;], &#xd;
+  PARAMETER[&quot;central_meridian&quot;, -54.0], &#xd;
+  PARAMETER[&quot;latitude_of_origin&quot;, -12.0], &#xd;
+  PARAMETER[&quot;standard_parallel_1&quot;, -2.0], &#xd;
+  PARAMETER[&quot;false_easting&quot;, 5000000.0], &#xd;
+  PARAMETER[&quot;false_northing&quot;, 10000000.0], &#xd;
+  PARAMETER[&quot;standard_parallel_2&quot;, -22.0], &#xd;
+  UNIT[&quot;m&quot;, 1.0], &#xd;
+  AXIS[&quot;x&quot;, EAST], &#xd;
+  AXIS[&quot;y&quot;, NORTH]]</nativeCRS>
+  <srs>EPSG:4674</srs>
+  <nativeBoundingBox>
+    <minx>-44.97887003200303</minx>
+    <maxx>-44.6211831110769</maxx>
+    <miny>-21.17533636426108</miny>
+    <maxy>-20.84999146535162</maxy>
+    <crs class="projected">PROJCS[&quot;unknown&quot;, &#xd;
+  GEOGCS[&quot;GCS_unknown&quot;, &#xd;
+    DATUM[&quot;D_Unknown_based_on_GRS80_ellipsoid&quot;, &#xd;
+      SPHEROID[&quot;GRS_1980&quot;, 6378137.0, 298.257222101]], &#xd;
+    PRIMEM[&quot;Greenwich&quot;, 0.0], &#xd;
+    UNIT[&quot;degree&quot;, 0.017453292519943295], &#xd;
+    AXIS[&quot;Longitude&quot;, EAST], &#xd;
+    AXIS[&quot;Latitude&quot;, NORTH]], &#xd;
+  PROJECTION[&quot;Albers_Conic_Equal_Area&quot;], &#xd;
+  PARAMETER[&quot;central_meridian&quot;, -54.0], &#xd;
+  PARAMETER[&quot;latitude_of_origin&quot;, -12.0], &#xd;
+  PARAMETER[&quot;standard_parallel_1&quot;, -2.0], &#xd;
+  PARAMETER[&quot;false_easting&quot;, 5000000.0], &#xd;
+  PARAMETER[&quot;false_northing&quot;, 10000000.0], &#xd;
+  PARAMETER[&quot;standard_parallel_2&quot;, -22.0], &#xd;
+  UNIT[&quot;m&quot;, 1.0], &#xd;
+  AXIS[&quot;x&quot;, EAST], &#xd;
+  AXIS[&quot;y&quot;, NORTH]]</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>-44.97887003200304</minx>
+    <maxx>-44.621183111076895</maxx>
+    <miny>-21.17533637638466</miny>
+    <maxy>-20.849991477009333</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="cachingEnabled">false</entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--28a09aed:19b522f0db5:-7fa3</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <internationalTitle/>
+  <internationalAbstract/>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

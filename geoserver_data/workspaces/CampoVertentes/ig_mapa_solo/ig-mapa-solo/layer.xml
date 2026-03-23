@@ -1,0 +1,17 @@
+<layer>
+  <name>ig-mapa-solo</name>
+  <id>LayerInfoImpl-d61d83b:19aac2eb7dd:-7f76</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-d61d83b:19aac2eb7dd:-7f8f</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-d61d83b:19aac2eb7dd:-7f77</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-11-22 17:09:15.820 UTC</dateCreated>
+  <dateModified>2026-02-09 12:09:58.889 UTC</dateModified>
+</layer>

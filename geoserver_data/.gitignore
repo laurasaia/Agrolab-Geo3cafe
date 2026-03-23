@@ -1,0 +1,8 @@
+# Camada de dados do GeoServer
+data/
+
+# GeoWebCache
+gwc/
+
+# Logs do GeoServer
+logs/

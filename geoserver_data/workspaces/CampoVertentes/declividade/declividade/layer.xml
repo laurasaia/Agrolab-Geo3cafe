@@ -1,0 +1,17 @@
+<layer>
+  <name>declividade</name>
+  <id>LayerInfoImpl-d61d83b:19aac2eb7dd:-7ff8</id>
+  <type>RASTER</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-d61d83b:19aac2eb7dd:-7fd8</id>
+  </defaultStyle>
+  <resource class="coverage">
+    <id>CoverageInfoImpl-d61d83b:19aac2eb7dd:-7ff9</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-11-22 16:34:29.483 UTC</dateCreated>
+  <dateModified>2025-12-24 22:41:13.352 UTC</dateModified>
+</layer>

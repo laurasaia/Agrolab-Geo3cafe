@@ -1,0 +1,13 @@
+services:
+  solara:
+    build:
+      context: ../apps/campo-vertentes
+      dockerfile: Dockerfile
+      args:
+        INSTALL_MODE: prod
+    environment:
+      - SOLARA_MODE=production
+    volumes: []
+
+  api:
+    command: uvicorn src.main:app --host 0.0.0.0 --port ${API_PORT}

@@ -1,0 +1,17 @@
+<layer>
+  <name>ig_cafe</name>
+  <id>LayerInfoImpl-46499ade:19ab3a6aeb0:-7de2</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--570ae188:124761b8d78:-7fe0</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-46499ade:19ab3a6aeb0:-7de3</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-11-24 03:25:39.399 UTC</dateCreated>
+  <dateModified>2026-01-21 01:58:12.665 UTC</dateModified>
+</layer>

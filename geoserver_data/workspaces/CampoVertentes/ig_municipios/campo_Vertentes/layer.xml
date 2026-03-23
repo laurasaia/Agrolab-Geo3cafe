@@ -1,0 +1,16 @@
+<layer>
+  <name>campo_Vertentes</name>
+  <id>LayerInfoImpl-d61d83b:19aac2eb7dd:-7ffb</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--570ae188:124761b8d78:-7fe0</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-d61d83b:19aac2eb7dd:-7ffc</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-11-22 15:44:00.552 UTC</dateCreated>
+</layer>

@@ -1,0 +1,26 @@
+<dataStore>
+  <id>DataStoreInfoImpl--28a09aed:19b522f0db5:-7fa0</id>
+  <name>bomsucesso_cafe_itae</name>
+  <description>Cafeiculturas classificadas de 2021 a 2022 no munícipio Bom Sucesso</description>
+  <type>Shapefile</type>
+  <enabled>true</enabled>
+  <workspace>
+    <id>WorkspaceInfoImpl-d61d83b:19aac2eb7dd:-8000</id>
+  </workspace>
+  <connectionParameters>
+    <entry key="charset">UTF-8</entry>
+    <entry key="filetype">shapefile</entry>
+    <entry key="create spatial index">true</entry>
+    <entry key="memory mapped buffer">false</entry>
+    <entry key="timezone">America/Sao_Paulo</entry>
+    <entry key="enable spatial index">true</entry>
+    <entry key="namespace">http://localhost:8080/geoserver/web/campo-vertentes</entry>
+    <entry key="cache and reuse memory maps">true</entry>
+    <entry key="skipScan">true</entry>
+    <entry key="url">file:data/bomsucesso_cafe_2019_2022_itae/bomsucesso_cafe_2021_2022_ltae.shp</entry>
+    <entry key="fstype">shape</entry>
+  </connectionParameters>
+  <__default>false</__default>
+  <dateCreated>2025-12-24 21:34:21.157 UTC</dateCreated>
+  <disableOnConnFailure>false</disableOnConnFailure>
+</dataStore>

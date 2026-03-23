@@ -1,0 +1,15 @@
+<coverageStore>
+  <id>CoverageStoreInfoImpl--28a09aed:19b522f0db5:-7feb</id>
+  <name>altitude</name>
+  <description>Raster de altitude da IG Campo das Vertentes</description>
+  <type>GeoTIFF</type>
+  <enabled>true</enabled>
+  <workspace>
+    <id>WorkspaceInfoImpl-d61d83b:19aac2eb7dd:-8000</id>
+  </workspace>
+  <__default>false</__default>
+  <dateCreated>2025-12-24 21:19:33.280 UTC</dateCreated>
+  <dateModified>2025-12-24 21:19:35.624 UTC</dateModified>
+  <disableOnConnFailure>false</disableOnConnFailure>
+  <url>file:data/ig_rasters/altitude.tif</url>
+</coverageStore>

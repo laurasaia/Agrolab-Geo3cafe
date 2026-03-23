@@ -1,0 +1,25 @@
+[src]
+exclude = [
+  ".venv",
+  "_build",
+  "build",
+  "dist",
+  "__pypackages__",
+  "__pycache__",
+  ".mypy_cache",
+  ".pytest_cache",
+  ".ruff_cache",
+  ".eggs",
+  "*.egg-info",
+  ".vscode",
+  ".ipynb_checkpoints",
+  "site-packages",
+  "geoserver_data/",
+]
+
+[rules]
+all = "warn"
+
+[terminal]
+output-format = "concise"
+error-on-warning = false

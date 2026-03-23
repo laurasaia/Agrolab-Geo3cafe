@@ -1,0 +1,38 @@
+# Docker
+.docker/
+
+# Variáveis de ambiente e dados sensíveis
+.env
+.env.local
+*.env
+
+# IDEs
+.vscode/
+.code-workspace
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs, dados temporários e arquivos de cache
+*.log
+*.tmp
+logs/
+*.cache
+
+# Build e distribuição
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml

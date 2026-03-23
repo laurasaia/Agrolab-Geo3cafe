@@ -1,0 +1,17 @@
+<layer>
+  <name>bomsucesso_cafe_2021_2022_ltae</name>
+  <id>LayerInfoImpl--28a09aed:19b522f0db5:-7f9e</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-1f534f7d:19b960325b1:-7ffe</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--28a09aed:19b522f0db5:-7f9f</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-12-24 21:35:06.540 UTC</dateCreated>
+  <dateModified>2026-01-08 13:10:09.602 UTC</dateModified>
+</layer>

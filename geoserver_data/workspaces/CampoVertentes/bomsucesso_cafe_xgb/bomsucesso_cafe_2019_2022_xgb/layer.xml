@@ -1,0 +1,17 @@
+<layer>
+  <name>bomsucesso_cafe_2019_2022_xgb</name>
+  <id>LayerInfoImpl--28a09aed:19b522f0db5:-7fa1</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-1f534f7d:19b960325b1:-7fff</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--28a09aed:19b522f0db5:-7fa2</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-12-24 21:30:49.763 UTC</dateCreated>
+  <dateModified>2026-01-07 01:13:51.521 UTC</dateModified>
+</layer>

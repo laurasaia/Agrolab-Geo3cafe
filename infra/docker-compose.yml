@@ -1,0 +1,82 @@
+name: geo3cafe
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    env_file:
+      - ../.env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  geoserver:
+    image: docker.osgeo.org/geoserver:2.28.0
+    ports:
+      - '8080:8080'
+    env_file:
+      - ../.env
+    environment:
+      SKIP_DEMO_DATA: true
+      INSTALL_EXTENSIONS: true
+      STABLE_EXTENSIONS: vectortiles
+      GEOSERVER_ADMIN_USER: ${GEOSERVER_ADMIN_USER}
+      GEOSERVER_ADMIN_PASSWORD: ${GEOSERVER_ADMIN_PASSWORD}
+      CORS_ENABLED: true
+      CORS_ALLOWED_ORIGINS: \*
+      CORS_ALLOWED_METHODS: GET,POST,PUT,DELETE,HEAD,OPTIONS
+      CORS_ALLOWED_HEADERS: Content-Type,X-Requested-With,Accept,Origin,Authorization
+    volumes:
+      - ../geoserver_data:/opt/geoserver_data/
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'curl',
+          '-f',
+          'http://localhost:8080/geoserver/web/wicket/resource/org.geoserver.web.GeoServerBasePage/img/logo.png',
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  solara:
+    build:
+      context: ../apps/campo-vertentes
+      dockerfile: Dockerfile
+      args:
+        INSTALL_MODE: dev
+    env_file:
+      - ../.env
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    volumes:
+      - ../apps/campo-vertentes/campo_vertentes:/campo_vertentes/campo_vertentes
+
+  api:
+    build:
+      context: ../apps/api
+      dockerfile: Dockerfile
+    command: uvicorn src.main:app --host 0.0.0.0 --port ${API_PORT} --reload
+    env_file:
+      - ../.env
+    ports:
+      - '${API_PORT}:${API_PORT}'
+    volumes:
+      - ../apps/api/src:/app/src
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+volumes:
+  mongo_data:
+    external: true
