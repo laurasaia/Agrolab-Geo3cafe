@@ -7,6 +7,17 @@ Stores disponíveis:
 - CoffeeGeoDataStore: Gerencia dados de café (IG Café)
 - LayersStore: Gerencia camadas WMS do mapa
 - EELayersStore: Gerencia camadas Earth Engine do mapa
+
+IMPORTANTE: estas stores são instâncias ÚNICAS, compartilhadas por TODAS as
+sessões/usuários da aplicação (veja stores/__init__.py). Por isso, elas devem
+guardar apenas DADOS (GeoDataFrames, strings, dicts, parâmetros) — nunca
+widgets ipyleaflet reais (WMSLayer, TileLayer, VectorTileLayer, etc). Um
+widget ipyleaflet é vinculado, por baixo dos panos, a um canal de comunicação
+(comm) de UMA sessão específica; se ele for cacheado aqui e reaproveitado por
+outra sessão, a segunda sessão trava esperando um comm que não é dela
+("No such comm"). A criação do widget em si deve acontecer dentro da página
+(@solara.component), tipicamente com solara.use_memo, usando os parâmetros
+que estas stores fornecem.
 """
 
 import urllib.parse
@@ -31,9 +42,8 @@ class GeoDataStore:
 		self._geojson = solara.reactive({"type": "FeatureCollection", "features": []})
 		self._loading = solara.reactive(False)
 		self._error = solara.reactive(None)
-		self._load_attempted = (
-			False  # Flag para evitar múltiplas tentativas de carregamento
-		)
+		self._load_attempted = solara.reactive(False)  # Flag para evitar múltiplas tentativas de carregamento
+		
 
 	@property
 	def gdf(self):
@@ -70,14 +80,10 @@ class GeoDataStore:
 		return not self._gdf.value.empty
 
 	def ensure_loaded(self, mode="wfs"):
-		"""Garante que os dados estão carregados. Se não estiverem, carrega."""
-		# Se já está carregando, não tentar novamente
 		if self._loading.value:
 			return
-
-		# Se não está carregado e ainda não tentou, ou se houve erro, tentar carregar
-		if not self.is_loaded() and (not self._load_attempted or self._error.value):
-			self._load_attempted = True
+		if not self.is_loaded() and (not self._load_attempted.value or self._error.value):
+			self._load_attempted.value = True
 			self.load_districts_gdf(mode=mode)
 
 	def load_districts_gdf(self, mode="wfs"):
@@ -156,7 +162,10 @@ class CoffeeGeoDataStore:
 		self._geojson = solara.reactive({"type": "FeatureCollection", "features": []})
 		self._loading = solara.reactive(False)
 		self._error = solara.reactive(None)
-		self._vectortile_layer = solara.reactive(None)
+		# Guarda apenas os PARÂMETROS para montar a camada VectorTile.
+		# O widget VectorTileLayer em si deve ser criado na página (por sessão),
+		# via solara.use_memo, usando esses parâmetros como dependências.
+		self._vectortile_params = solara.reactive(None)
 
 		# Cache simples por município
 		self._cache = {}
@@ -192,16 +201,51 @@ class CoffeeGeoDataStore:
 		return self._error.value
 
 	@property
-	def vectortile_layer(self):
-		"""Camada de café em formato VectorTile (read-only)."""
-		return self._vectortile_layer.value
+	def vectortile_params(self):
+		"""
+		Parâmetros para criar a camada VectorTile (read-only).
+
+		Retorna um dict com as chaves "url", "name" e "vector_tile_layer_styles",
+		prontos para serem passados como leaflet.VectorTileLayer(**params) na
+		página. Retorna None se ainda não houver dados carregados.
+		"""
+		return self._vectortile_params.value
+	
+	def build_vectortile_params(self, cd_mun=None):
+		"""Calcula os parâmetros da camada VectorTile para um município,
+		SEM guardar em nenhum estado compartilhado. Pura função de cd_mun."""
+		from ..config import COFFEE_LAYER, COFFEE_LAYER_COLOR, WMTS_TEMPLATE_URL
+
+		base_url = WMTS_TEMPLATE_URL.replace("<LAYER_NAME>", COFFEE_LAYER).replace(
+			"<TILE_FORMAT>", "application/vnd.mapbox-vector-tile"
+		)
+		params = {}
+		if cd_mun:
+			params["CQL_FILTER"] = f"CD_MUN={cd_mun}"
+		query_string = urllib.parse.urlencode(params)
+		url = f"{base_url}&{query_string}" if query_string else base_url
+		layer_name_in_tile = COFFEE_LAYER.split(":")[-1]
+		vector_tile_styles = {
+			layer_name_in_tile: {
+				"color": COFFEE_LAYER_COLOR,
+				"weight": 2,
+				"fillOpacity": 0,
+				"fillColor": COFFEE_LAYER_COLOR,
+				"fill": True,
+			}
+		}
+		return {"url": url, "name": "Café", "vector_tile_layer_styles": vector_tile_styles}
 
 	def clear_cache(self):
 		"""Limpa o cache de dados de café."""
 		self._cache = {}
 
 	def load_coffee_as_vectortile(self, cd_mun=None):
-		"""Carrega a camada de café como Vector Tiles usando WMTS."""
+		"""Carrega os parâmetros da camada de café como Vector Tiles usando WMTS.
+
+		Não cria o widget VectorTileLayer aqui (isso deve ser feito na página,
+		por sessão) — apenas calcula e guarda os parâmetros necessários.
+		"""
 		from ..config import COFFEE_LAYER, COFFEE_LAYER_COLOR, WMTS_TEMPLATE_URL
 
 		self._loading.set(True)
@@ -231,12 +275,13 @@ class CoffeeGeoDataStore:
 				}
 			}
 
-			vt_layer = VectorTileLayer(
-				url=url, name="Café", vector_tile_layer_styles=vector_tile_styles
+			self._vectortile_params.set(
+				{
+					"url": url,
+					"name": "Café",
+					"vector_tile_layer_styles": vector_tile_styles,
+				}
 			)
-			print(vt_layer)
-
-			self._vectortile_layer.set(vt_layer)
 			# Limpar GDF antigo para economizar memória
 			self._gdf.set(gpd.GeoDataFrame())
 			self._geojson.set({"type": "FeatureCollection", "features": []})
@@ -322,7 +367,14 @@ class CoffeeGeoDataStore:
 
 class LayerInfo:
 	"""
-	Informações sobre uma camada WMS.
+	Informações sobre uma camada WMS/WMTS.
+
+	Guarda apenas os DADOS necessários para montar a camada (nome, URLs,
+	visibilidade, opacidade). O widget ipyleaflet (WMSLayer/TileLayer) em si
+	NÃO é mais cacheado aqui — ele deve ser criado na página, por sessão,
+	via solara.use_memo, usando os dados deste objeto como parâmetros/
+	dependências. Isso evita compartilhar o mesmo widget (e seu comm) entre
+	sessões diferentes.
 	"""
 
 	def __init__(self, name: str, layer_name: str, wms_url: str, wmts_url: str):
@@ -330,39 +382,44 @@ class LayerInfo:
 		self.layer_name = layer_name
 		self.wms_url = wms_url
 		self.wmts_template_url = wmts_url
-		self.layer_instance: Optional[WMSLayer] = None
 		self.visible = solara.reactive(False)
 		self.opacity = solara.reactive(1.0)  # Opacidade padrão
 
-	def get_or_create_layer(self, mode="wms") -> WMSLayer | TileLayer:
-		"""Cria a camada WMS se ainda não existir."""
-		if self.layer_instance is None:
-			if mode == "wms":
-				self.layer_instance = WMSLayer(
-					url=self.wms_url + "?tiled=true",
-					layers=self.layer_name,
-					format="image/jpeg",
-					transparent=True,
-					name=self.name,
-					tiled=True,
-					opacity=self.opacity.value,
-				)
-			elif mode == "wmts":
-				url = self.wmts_template_url.replace(
-					"<LAYER_NAME>", self.layer_name
-				).replace("<TILE_FORMAT>", "image/png")
+	def get_layer_params(self, mode="wms") -> dict:
+		"""
+		Retorna os parâmetros necessários para criar a camada (não o widget).
 
-				self.layer_instance = TileLayer(
-					name=self.name,
-					url=url,
-					opacity=self.opacity.value,
-					tile_size=256,
-				)
+		Use na página com solara.use_memo, por exemplo:
+			params = layer_info.get_layer_params(mode="wmts")
+			layer = solara.use_memo(
+				lambda: TileLayer(**params) if params["mode"] == "wmts" else WMSLayer(**params_wms),
+				dependencies=[params["url"], params["opacity"]],
+			)
+		"""
+		if mode == "wms":
+			return {
+				"mode": "wms",
+				"url": self.wms_url + "?tiled=true",
+				"layers": self.layer_name,
+				"format": "image/jpeg",
+				"transparent": True,
+				"name": self.name,
+				"tiled": True,
+				"opacity": self.opacity.value,
+			}
+		elif mode == "wmts":
+			url = self.wmts_template_url.replace(
+				"<LAYER_NAME>", self.layer_name
+			).replace("<TILE_FORMAT>", "image/png")
+			return {
+				"mode": "wmts",
+				"name": self.name,
+				"url": url,
+				"opacity": self.opacity.value,
+				"tile_size": 256,
+			}
 		else:
-			# Atualizar opacidade se a camada já existe
-			self.layer_instance.opacity = self.opacity.value
-
-		return self.layer_instance
+			raise ValueError(f"Modo inválido: {mode}")
 
 	def toggle_visibility(self):
 		"""Alterna a visibilidade da camada."""
@@ -375,9 +432,6 @@ class LayerInfo:
 	def set_opacity(self, opacity: float):
 		"""Define a opacidade da camada."""
 		self.opacity.set(opacity)
-		# Atualizar a instância da camada se ela existir
-		if self.layer_instance is not None:
-			self.layer_instance.opacity = opacity
 
 
 class LayersStore:
@@ -428,13 +482,17 @@ class LayersStore:
 		"""Retorna a lista ordenada de chaves de camadas visíveis."""
 		return self._visible_order.value
 
-	def get_visible_layers(self) -> list:
-		"""Retorna lista de instâncias de camadas visíveis ordenadas (última habilitada no topo)."""
+	def get_visible_layer_infos(self) -> list:
+		"""
+		Retorna os LayerInfo (não os widgets) das camadas visíveis, ordenados
+		(última habilitada no topo). Use isso na página para criar os widgets
+		por sessão, via solara.use_memo.
+		"""
 		visible = []
 		# Retornar na ordem inversa (primeira da lista vai para o topo do mapa)
 		for class_key in reversed(self._visible_order.value):
 			if class_key in self.layers and self.layers[class_key].visible.value:
-				visible.append(self.layers[class_key].get_or_create_layer(mode="wmts"))
+				visible.append(self.layers[class_key])
 		return visible
 
 	def toggle_layer(self, class_key: str):

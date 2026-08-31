@@ -1,14 +1,14 @@
 <coverageStore>
-  <id>CoverageStoreInfoImpl-d61d83b:19aac2eb7dd:-7ffa</id>
+  <id>CoverageStoreInfoImpl--68881876:19e27d65667:-7faa</id>
   <name>declividade</name>
-  <description>Raster de declividade da IG Campo das Vertentes</description>
   <type>GeoTIFF</type>
   <enabled>true</enabled>
   <workspace>
     <id>WorkspaceInfoImpl-d61d83b:19aac2eb7dd:-8000</id>
   </workspace>
   <__default>false</__default>
-  <dateCreated>2025-11-22 16:32:32.887 UTC</dateCreated>
+  <dateCreated>2026-05-14 19:46:03.392 UTC</dateCreated>
+  <dateModified>2026-05-14 19:46:04.477 UTC</dateModified>
   <disableOnConnFailure>false</disableOnConnFailure>
   <url>file:data/ig_rasters/declividade.tif</url>
 </coverageStore>

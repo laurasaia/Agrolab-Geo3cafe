@@ -1,20 +1,16 @@
 <layer>
   <name>BDC_NDVI</name>
-  <id>LayerInfoImpl--28a09aed:19b522f0db5:-7ffe</id>
+  <id>LayerInfoImpl--68881876:19e27d65667:-7fca</id>
   <type>RASTER</type>
   <defaultStyle>
     <id>StyleInfoImpl--28a09aed:19b522f0db5:-7ffd</id>
   </defaultStyle>
   <resource class="coverage">
-    <id>CoverageInfoImpl--28a09aed:19b522f0db5:-7fff</id>
+    <id>CoverageInfoImpl--68881876:19e27d65667:-7fcb</id>
   </resource>
-  <queryable>true</queryable>
-  <opaque>false</opaque>
   <attribution>
-    <title>Sentinel-2 BDC - Normalized Vegetation Index (NDVI). 2025-01-09</title>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2025-12-24 21:07:33.25 UTC</dateCreated>
-  <dateModified>2026-01-09 17:50:44.122 UTC</dateModified>
+  <dateCreated>2026-05-14 19:39:28.852 UTC</dateCreated>
 </layer>

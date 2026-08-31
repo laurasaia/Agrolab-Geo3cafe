@@ -1,17 +1,16 @@
 <layer>
   <name>orientacao-vertentes</name>
-  <id>LayerInfoImpl-d61d83b:19aac2eb7dd:-7fde</id>
+  <id>LayerInfoImpl--68881876:19e27d65667:-7f96</id>
   <type>RASTER</type>
   <defaultStyle>
     <id>StyleInfoImpl-d61d83b:19aac2eb7dd:-7f90</id>
   </defaultStyle>
   <resource class="coverage">
-    <id>CoverageInfoImpl-d61d83b:19aac2eb7dd:-7fdf</id>
+    <id>CoverageInfoImpl--68881876:19e27d65667:-7f97</id>
   </resource>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2025-11-22 16:41:18.897 UTC</dateCreated>
-  <dateModified>2025-11-22 17:05:53.639 UTC</dateModified>
+  <dateCreated>2026-05-14 19:49:18.382 UTC</dateCreated>
 </layer>

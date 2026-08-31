@@ -1,253 +1,231 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" version="1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns:se="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc">
+<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" version="1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd" xmlns:ogc="http://www.opengis.net/ogc">
   <NamedLayer>
-    <se:Name>ig-mapa-solo</se:Name>
+    <Name>ig-mapa-solo</Name>
     <UserStyle>
-      <se:Name>ig-mapa-solo</se:Name>
-      <se:FeatureTypeStyle>
-        <se:Rule>
-          <se:Name>Afloramento rochoso</se:Name>
-          <se:Description>
-            <se:Title>Afloramento rochoso</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+      <Name>ig-mapa-solo</Name>
+      <FeatureTypeStyle>
+        <Rule>
+          <Name>Afloramento rochoso</Name>
+          <Title>Afloramento rochoso</Title>
+          <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>legenda</ogc:PropertyName>
               <ogc:Literal>Afloramento rochoso</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:SvgParameter name="fill">#646464</se:SvgParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:SvgParameter name="stroke">#232323</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">1</se:SvgParameter>
-              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Argissolo vermelho distr骹ico</se:Name>
-          <se:Description>
-            <se:Title>Argissolo vermelho distr骹ico</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#646464</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+              <CssParameter name="stroke-width">1</CssParameter>
+              <CssParameter name="stroke-linejoin">bevel</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Argissolo vermelho distrofico</Name>
+          <Title>Argissolo vermelho distr贸fico</Title>
+          <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>legenda</ogc:PropertyName>
-              <ogc:Literal>Argissolo vermelho distr骹ico</ogc:Literal>
+              <ogc:Literal>Argissolo vermelho distr贸fico</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:SvgParameter name="fill">#f07f7f</se:SvgParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:SvgParameter name="stroke">#232323</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">1</se:SvgParameter>
-              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Argissolo vermelho-amarelo distr骹ico</se:Name>
-          <se:Description>
-            <se:Title>Argissolo vermelho-amarelo distr骹ico</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#f07f7f</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+              <CssParameter name="stroke-width">1</CssParameter>
+              <CssParameter name="stroke-linejoin">bevel</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Argissolo vermelho-amarelo distrofico</Name>
+          <Title>Argissolo vermelho-amarelo distr贸fico</Title>
+          <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>legenda</ogc:PropertyName>
-              <ogc:Literal>Argissolo vermelho-amarelo distr骹ico</ogc:Literal>
+              <ogc:Literal>Argissolo vermelho-amarelo distr贸fico</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:SvgParameter name="fill">#f7c2ff</se:SvgParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:SvgParameter name="stroke">#232323</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">1</se:SvgParameter>
-              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Argissolo vermelho-amarelo eutr骹ico</se:Name>
-          <se:Description>
-            <se:Title>Argissolo vermelho-amarelo eutr骹ico</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#f7c2ff</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+              <CssParameter name="stroke-width">1</CssParameter>
+              <CssParameter name="stroke-linejoin">bevel</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Argissolo vermelho-amarelo eutrofico</Name>
+          <Title>Argissolo vermelho-amarelo eutr贸fico</Title>
+          <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>legenda</ogc:PropertyName>
-              <ogc:Literal>Argissolo vermelho-amarelo eutr骹ico</ogc:Literal>
+              <ogc:Literal>Argissolo vermelho-amarelo eutr贸fico</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:SvgParameter name="fill">#f7c2ff</se:SvgParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:SvgParameter name="stroke">#232323</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">1</se:SvgParameter>
-              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Cambissolo h醦lico Tb distr骹ico</se:Name>
-          <se:Description>
-            <se:Title>Cambissolo h醦lico Tb distr骹ico</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#f7c2ff</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+              <CssParameter name="stroke-width">1</CssParameter>
+              <CssParameter name="stroke-linejoin">bevel</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Cambissolo haplico Tb distrofico</Name>
+          <Title>Cambissolo h谩plico Tb distr贸fico</Title>
+          <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>legenda</ogc:PropertyName>
-              <ogc:Literal>Cambissolo h醦lico Tb distr骹ico</ogc:Literal>
+              <ogc:Literal>Cambissolo h谩plico Tb distr贸fico</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:SvgParameter name="fill">#d7c5a5</se:SvgParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:SvgParameter name="stroke">#232323</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">1</se:SvgParameter>
-              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Cambissolo h醦lico Tb eutr骹ico</se:Name>
-          <se:Description>
-            <se:Title>Cambissolo h醦lico Tb eutr骹ico</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#d7c5a5</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+              <CssParameter name="stroke-width">1</CssParameter>
+              <CssParameter name="stroke-linejoin">bevel</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Cambissolo haplico Tb eutrofico</Name>
+          <Title>Cambissolo h谩plico Tb eutr贸fico</Title>
+          <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>legenda</ogc:PropertyName>
-              <ogc:Literal>Cambissolo h醦lico Tb eutr骹ico</ogc:Literal>
+              <ogc:Literal>Cambissolo h谩plico Tb eutr贸fico</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:SvgParameter name="fill">#d7c5a5</se:SvgParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:SvgParameter name="stroke">#232323</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">1</se:SvgParameter>
-              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Corpos d醙ua</se:Name>
-          <se:Description>
-            <se:Title>Corpos d醙ua</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#d7c5a5</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+              <CssParameter name="stroke-width">1</CssParameter>
+              <CssParameter name="stroke-linejoin">bevel</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Corpos dagua</Name>
+          <Title>Corpos d谩gua</Title>
+          <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>legenda</ogc:PropertyName>
-              <ogc:Literal>Corpos d醙ua</ogc:Literal>
+              <ogc:Literal>Corpos d谩gua</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:SvgParameter name="fill">#a8d6ff</se:SvgParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:SvgParameter name="stroke">#232323</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">1</se:SvgParameter>
-              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Latossolo vermelho distr骹ico</se:Name>
-          <se:Description>
-            <se:Title>Latossolo vermelho distr骹ico</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#a8d6ff</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+              <CssParameter name="stroke-width">1</CssParameter>
+              <CssParameter name="stroke-linejoin">bevel</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Latossolo vermelho distrofico</Name>
+          <Title>Latossolo vermelho distr贸fico</Title>
+          <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>legenda</ogc:PropertyName>
-              <ogc:Literal>Latossolo vermelho distr骹ico</ogc:Literal>
+              <ogc:Literal>Latossolo vermelho distr贸fico</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:SvgParameter name="fill">#f4b980</se:SvgParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:SvgParameter name="stroke">#232323</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">1</se:SvgParameter>
-              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Latossolo vermelho-amarelo distr骹ico</se:Name>
-          <se:Description>
-            <se:Title>Latossolo vermelho-amarelo distr骹ico</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#f4b980</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+              <CssParameter name="stroke-width">1</CssParameter>
+              <CssParameter name="stroke-linejoin">bevel</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Latossolo vermelho-amarelo distrofico</Name>
+          <Title>Latossolo vermelho-amarelo distr贸fico</Title>
+          <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>legenda</ogc:PropertyName>
-              <ogc:Literal>Latossolo vermelho-amarelo distr骹ico</ogc:Literal>
+              <ogc:Literal>Latossolo vermelho-amarelo distr贸fico</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:SvgParameter name="fill">#f7d1a6</se:SvgParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:SvgParameter name="stroke">#232323</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">1</se:SvgParameter>
-              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Neossolo lit髄ico distr骹ico</se:Name>
-          <se:Description>
-            <se:Title>Neossolo lit髄ico distr骹ico</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#f7d1a6</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+              <CssParameter name="stroke-width">1</CssParameter>
+              <CssParameter name="stroke-linejoin">bevel</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Neossolo litolico distrofico</Name>
+          <Title>Neossolo lit贸lico distr贸fico</Title>
+          <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>legenda</ogc:PropertyName>
-              <ogc:Literal>Neossolo lit髄ico distr骹ico</ogc:Literal>
+              <ogc:Literal>Neossolo lit贸lico distr贸fico</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:SvgParameter name="fill">#96b395</se:SvgParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:SvgParameter name="stroke">#232323</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">1</se:SvgParameter>
-              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Nitossolo h醦lico distr骹ico</se:Name>
-          <se:Description>
-            <se:Title>Nitossolo h醦lico distr骹ico</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#96b395</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+              <CssParameter name="stroke-width">1</CssParameter>
+              <CssParameter name="stroke-linejoin">bevel</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Nitossolo haplico distrofico</Name>
+          <Title>Nitossolo h谩plico distr贸fico</Title>
+          <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>legenda</ogc:PropertyName>
-              <ogc:Literal>Nitossolo h醦lico distr骹ico</ogc:Literal>
+              <ogc:Literal>Nitossolo h谩plico distr贸fico</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:SvgParameter name="fill">#734c00</se:SvgParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:SvgParameter name="stroke">#232323</se:SvgParameter>
-              <se:SvgParameter name="stroke-width">1</se:SvgParameter>
-              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-      </se:FeatureTypeStyle>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#734c00</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+              <CssParameter name="stroke-width">1</CssParameter>
+              <CssParameter name="stroke-linejoin">bevel</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+      </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>
 </StyledLayerDescriptor>

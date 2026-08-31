@@ -1,32 +1,13 @@
 <global>
   <settings>
-    <id>SettingsInfoImpl-68f6c583:154ca420c47:-8000</id>
+    <id>SettingsInfoImpl-422787ef:1a0070b4d7b:-8000</id>
     <contact>
-      <addressCity>Alexandria</addressCity>
-      <addressCountry>Roman Empire</addressCountry>
-      <addressState>Egypt</addressState>
-      <addressType>Work</addressType>
-      <contactEmail>claudius.ptolomaeus@mercury.olympus.gov</contactEmail>
-      <contactOrganization>OSGeo</contactOrganization>
-      <contactPerson>Claudius Ptolomaeus</contactPerson>
-      <contactPosition>Chief Geographer</contactPosition>
-      <onlineResource>https://www.osgeo.org/</onlineResource>
-      <welcome>Designed for interoperability, GeoServer publishes data from any major spatial data source using open standards.</welcome>
+      <id>contact</id>
     </contact>
     <charset>UTF-8</charset>
-    <numDecimals>8</numDecimals>
-    <onlineResource>http://geoserver.org</onlineResource>
-    <proxyBaseUrl>http://localhost:8080/geoserver</proxyBaseUrl>
-    <verbose>false</verbose>
+    <numDecimals>4</numDecimals>
+    <verbose>true</verbose>
     <verboseExceptions>false</verboseExceptions>
-    <metadata>
-      <map>
-        <entry>
-          <string>quietOnNotFound</string>
-          <boolean>false</boolean>
-        </entry>
-      </map>
-    </metadata>
     <localWorkspaceIncludesPrefix>false</localWorkspaceIncludesPrefix>
     <showCreatedTimeColumnsInAdminList>false</showCreatedTimeColumnsInAdminList>
     <showModifiedTimeColumnsInAdminList>false</showModifiedTimeColumnsInAdminList>
@@ -41,20 +22,20 @@
     <memoryCapacity>0.5</memoryCapacity>
     <memoryThreshold>0.75</memoryThreshold>
     <imageIOCache>false</imageIOCache>
+    <pngEncoderType>PNGJ</pngEncoderType>
   </jai>
   <coverageAccess>
-    <maxPoolSize>10</maxPoolSize>
+    <maxPoolSize>5</maxPoolSize>
     <corePoolSize>5</corePoolSize>
     <keepAliveTime>30000</keepAliveTime>
     <queueType>UNBOUNDED</queueType>
     <imageIOCacheThreshold>10240</imageIOCacheThreshold>
   </coverageAccess>
-  <metadata>
-    <entry key="logRequestsEnabled">false</entry>
-  </metadata>
-  <updateSequence>563</updateSequence>
+  <updateSequence>3</updateSequence>
   <featureTypeCacheSize>0</featureTypeCacheSize>
   <globalServices>true</globalServices>
   <xmlPostRequestLogBufferSize>1024</xmlPostRequestLogBufferSize>
+  <trailingSlashMatch>true</trailingSlashMatch>
   <webUIMode>DEFAULT</webUIMode>
+  <allowStoredQueriesPerWorkspace>true</allowStoredQueriesPerWorkspace>
 </global>

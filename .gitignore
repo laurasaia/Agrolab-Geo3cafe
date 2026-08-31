@@ -39,3 +39,7 @@ coverage.xml
 
 # MongoDB data
 mongo_seed/*
+
+#Wsl Identifier
+*:Zone.Identifier
+*.Zone.Identifier

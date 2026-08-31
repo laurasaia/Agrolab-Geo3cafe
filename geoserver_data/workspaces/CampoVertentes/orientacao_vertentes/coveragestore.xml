@@ -1,14 +1,14 @@
 <coverageStore>
-  <id>CoverageStoreInfoImpl-d61d83b:19aac2eb7dd:-7fe0</id>
+  <id>CoverageStoreInfoImpl--68881876:19e27d65667:-7f98</id>
   <name>orientacao_vertentes</name>
-  <description>Raster de orientação de vertentes da IG Campo das Vertentes</description>
   <type>GeoTIFF</type>
   <enabled>true</enabled>
   <workspace>
     <id>WorkspaceInfoImpl-d61d83b:19aac2eb7dd:-8000</id>
   </workspace>
   <__default>false</__default>
-  <dateCreated>2025-11-22 16:41:05.388 UTC</dateCreated>
+  <dateCreated>2026-05-14 19:48:53.680 UTC</dateCreated>
+  <dateModified>2026-05-14 19:48:55.93 UTC</dateModified>
   <disableOnConnFailure>false</disableOnConnFailure>
   <url>file:data/ig_rasters/orientacao-vertentes.tif</url>
 </coverageStore>

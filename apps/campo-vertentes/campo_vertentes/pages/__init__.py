@@ -26,33 +26,10 @@ from ..config import COFFEE_YIELD_JSON, COFFEE_YIELD_VARS, COMPONENTS_BG
 from ..stores import geo_data_store
 from ..utils import find_geocode_by_name
 
-merged_gdf = solara.reactive(None)
-years = solara.reactive([])
-controls = solara.reactive(
-	[
-		leaflet.ZoomControl.element(position="topleft"),
-		leaflet.ScaleControl.element(position="bottomleft"),
-	]
-)
-layers = solara.reactive([])
-geo_layer = solara.reactive(None)
-labels_layer = solara.reactive(None)
-popup_layer = solara.reactive(None)
-legend_content = solara.reactive(None)
-legend_visible = solara.reactive(False)
-legend_button = solara.reactive(None)
-
-zoom = solara.reactive(9)
-center = solara.reactive((-21.0, -44.0))  # Centro padrão de MG
-year = solara.reactive(2024)
-selected_district = solara.reactive(None)
-yield_filter = solara.reactive(list(COFFEE_YIELD_VARS.keys())[0])
-yield_colormap = solara.reactive(None)
-
-# Estados para animação
-is_playing = solara.reactive(False)
-preprocessed_data = solara.reactive({})  # Cache de dados processados por ano
-is_data_ready = solara.reactive(False)
+INITIAL_CONTROLS = [
+	leaflet.ZoomControl.element(position="topleft"),
+	leaflet.ScaleControl.element(position="bottomleft"),
+]
 
 
 def gerar_classes_porcentagem(df, coluna, n_classes=6):
@@ -61,6 +38,7 @@ def gerar_classes_porcentagem(df, coluna, n_classes=6):
 	Cada município terá um percentual calculado e será classificado.
 	"""
 	# Calcular o total para cada ano
+	print(df.shape, df.columns.tolist())
 	total_por_ano = df.groupby("ano")[coluna].transform("sum")
 
 	# Calcular percentual de cada município em relação ao total do ano
@@ -76,8 +54,6 @@ def gerar_classes_porcentagem(df, coluna, n_classes=6):
 	# Formata rótulos com percentuais
 	labels = [f"{bins[i]:.1f}% - {bins[i + 1]:.1f}%" for i in range(n_classes)]
 
-	# print(f"Classes para {coluna}:", labels)
-
 	df[f"class_{coluna}"] = pd.cut(
 		df[f"pct_{coluna}"], bins=bins, labels=labels, include_lowest=True
 	)
@@ -85,30 +61,51 @@ def gerar_classes_porcentagem(df, coluna, n_classes=6):
 	return df, labels
 
 
-def preprocess_all_years(merged_df: pd.DataFrame) -> Dict[int, pd.DataFrame]:
-	"""
-	Pré-processa os dados de todos os anos para animação suave.
-	Retorna um dicionário com ano como chave e GeoDataFrame filtrado como valor.
-	"""
-	processed = {}
-	sorted_years = sorted(merged_df["ano"].unique())
-	years.set(sorted_years)
-
-	for yr in sorted_years:
-		filtered = merged_df[merged_df["ano"] == yr].copy()
-		if len(filtered) > 0:
-			filtered["valor"] = filtered[yield_filter.value]
-			processed[yr] = filtered
-
-	return processed
-
-
 @solara.component
 def Page():
+	merged_gdf = solara.use_reactive(None)
+	years = solara.use_reactive([])
+	layers = solara.use_reactive([])
+	geo_layer = solara.use_reactive(None)
+	labels_layer = solara.use_reactive(None)
+	popup_layer = solara.use_reactive(None)
+	legend_content = solara.use_reactive(None)
+	legend_visible = solara.use_reactive(False)
+	legend_button = solara.use_reactive(None)
+	controls = solara.use_reactive(INITIAL_CONTROLS)
+	zoom = solara.use_reactive(9)
+	center = solara.use_reactive((-21.0, -44.0))  # Centro padrão de MG
+	year = solara.use_reactive(2024)
+	selected_district = solara.use_reactive(None)
+	yield_filter = solara.use_reactive(list(COFFEE_YIELD_VARS.keys())[0])
+	yield_colormap = solara.use_reactive(None)
+
+	# Estados para animação
+	is_playing = solara.use_reactive(False)
+	preprocessed_data = solara.use_reactive({})  # Cache de dados processados por ano
+	is_data_ready = solara.use_reactive(False)
+
 	# Estados unificados de loading e erro
 	is_loading = solara.use_reactive(False)
 	error_message = solara.use_reactive(None)
 	data_ready = solara.use_reactive(False)
+
+	def preprocess_all_years(merged_df: pd.DataFrame) -> Dict[int, pd.DataFrame]:
+		"""
+		Pré-processa os dados de todos os anos para animação suave.
+		Retorna um dicionário com ano como chave e GeoDataFrame filtrado como valor.
+		"""
+		processed = {}
+		sorted_years = sorted(merged_df["ano"].unique())
+		years.set(sorted_years)
+
+		for yr in sorted_years:
+			filtered = merged_df[merged_df["ano"] == yr].copy()
+			if len(filtered) > 0:
+				filtered["valor"] = filtered[yield_filter.value]
+				processed[yr] = filtered
+
+		return processed
 
 	# Buscar dados da API
 	data = use_fetch(COFFEE_YIELD_JSON)
@@ -471,6 +468,15 @@ def Page():
 
 	use_task(animation_task, dependencies=[is_playing.value, is_data_ready.value])
 
+	# Garante que a animação para quando a sessão é encerrada (fechar aba, refresh, etc.)
+	def cleanup_on_unmount():
+		def cleanup():
+			is_playing.set(False)
+
+		return cleanup
+
+	solara.use_effect(cleanup_on_unmount, [])
+
 	with solara.Column(style={"flex-grow": "1", "gap": "15px"}) as main:
 		# Filtros de controle
 		Filters(
@@ -576,7 +582,6 @@ def Page():
 		# Verificar se há dados antes de renderizar
 		if len(district_data) > 0:
 			with solara.Card(
-				# title=f"Série Temporal - {district_data.iloc[0]['nome']}"
 				margin=0,
 				style={"padding": "0 10px", "position": "relative"},
 			):

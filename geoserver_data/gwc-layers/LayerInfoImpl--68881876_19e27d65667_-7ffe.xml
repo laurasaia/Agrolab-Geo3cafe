@@ -1,8 +1,8 @@
 <GeoServerTileLayer>
-  <id>LayerInfoImpl-d61d83b:19aac2eb7dd:-7fde</id>
+  <id>LayerInfoImpl--68881876:19e27d65667:-7ffe</id>
   <enabled>true</enabled>
   <inMemoryCached>true</inMemoryCached>
-  <name>CampoVertentes:orientacao-vertentes</name>
+  <name>CampoVertentes:altitude</name>
   <mimeFormats>
     <string>image/png</string>
     <string>image/jpeg</string>
@@ -26,7 +26,7 @@
       <key>STYLES</key>
       <defaultValue></defaultValue>
       <availableStyles class="sorted-set"/>
-      <defaultStyle>CampoVertentes:orientacao_vertentes</defaultStyle>
+      <defaultStyle>CampoVertentes:altitude</defaultStyle>
     </styleParameterFilter>
   </parameterFilters>
   <gutter>0</gutter>

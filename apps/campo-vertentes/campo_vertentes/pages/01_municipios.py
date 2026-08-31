@@ -21,14 +21,6 @@ from ..config import CLASSES, GEOSERVER_URL, POINT_TIMESERIES_JSON
 from ..stores import coffee_geo_data_store, geo_data_store, layers_store
 from ..utils import find_geocode_by_name, find_name_by_geocode
 
-# Setar roi inicial para Earth Engine Layers Store
-roi = solara.reactive(None)
-
-zoom = solara.reactive(11)
-center = solara.reactive((-21.0, -44.0))  # Inicialização padrão
-bounds = solara.reactive(None)
-selected_district = solara.reactive(None)  # Será inicializado no componente
-
 basemaps = [
 	TileLayer.element(
 		name="Satélite",
@@ -41,77 +33,10 @@ basecontrols = [
 	leaflet.ZoomControl.element(position="topleft"),
 	leaflet.ScaleControl.element(position="bottomleft"),
 ]
-layers = solara.reactive(basemaps)
-controls = solara.reactive(basecontrols)
-district_geo_layer = solara.reactive(None)
-coffee_geo_layer = solara.reactive(None)
-points_geo_layer = solara.reactive(None)
-popup_layer = solara.reactive(None)
-geoman_control = solara.reactive(None)
-button_control = solara.reactive(None)
-
-# Estados para marcador interativo
-is_graph_mode = solara.reactive(False)
-selected_location = solara.reactive(None)
-
-# Dicionário para armazenar camadas API existentes (NDVI, EVI, etc.)
-api_layers_cache = solara.reactive({})
-
-# Estado global para controlar classes API selecionadas
-selected_api_classes = solara.reactive([])
-api_trigger = solara.reactive(0)
-
-# Controles de legenda do mapa
-is_layer_toogled = solara.reactive(False)
-map_legend_control = solara.reactive(None)
-legend_toggle_control = solara.reactive(None)
-legend_visible = solara.reactive(True)
-
-
-def toggle_layer(classe: str):
-	"""Callback para alternar visibilidade da camada."""
-	layers_store.toggle_layer(classe)
-	is_layer_toogled.set(True)
-
-
-def on_draw(target, action, geo_json):
-	"""Captura quando um marcador é desenhado usando Geoman.
-
-	Args:
-	                                                                target: O controle GeomanDrawControl
-	                                                                action: Tipo de ação ('create', 'edit', 'remove', etc)
-	                                                                geo_json: Dados GeoJSON do marcador (pode ser lista ou dict)
-	"""
-	if action != "create":
-		return
-
-	# geo_json pode ser uma lista
-	if isinstance(geo_json, list):
-		if not geo_json:
-			return
-		geo_json = geo_json[0]  # Pegar primeiro item
-
-	if not geo_json:
-		return
-
-	# Extrair coordenadas do marcador
-	geometry = geo_json.get("geometry", {})
-	if geometry.get("type") == "Point":
-		coords = geometry.get("coordinates", [])  # [lon, lat]
-		if len(coords) == 2:
-			# Desativar modo de desenho e atualizar botão
-			if geoman_control.value:
-				geoman_control.value.current_mode = None
-			if button_control.value and button_control.value.widget:
-				button_control.value.widget.value = False  # Desativa toggle
-
-			# Salvar nova localização (isso dispara criação do marcador)
-			# selected_location.value = coords
 
 
 def get_feature_info(lat, lon):
 	# reprojeta ponto clicado
-	# x31983, y31983 = to_31983(lon, lat)
 	x31983, y31983 = lon, lat
 
 	# Define tamanho padrão OpenLayers
@@ -120,10 +45,6 @@ def get_feature_info(lat, lon):
 	X = 50
 	Y = 50
 
-	# Em vez de calcular bounds pela tela,
-	# cria um bbox pequeno ao redor do ponto
-	# por exemplo 200 metros pra cada lado
-	# buffer = 100  # você pode ajustar
 	buffer = 0.0005  # você pode ajustar
 
 	minx = x31983 - buffer
@@ -171,6 +92,40 @@ def get_feature_info(lat, lon):
 
 @solara.component
 def Page():
+	# Setar roi inicial para Earth Engine Layers Store
+	roi = solara.use_reactive(None)
+
+	zoom = solara.use_reactive(11)
+	center = solara.use_reactive((-21.0, -44.0))  # Inicialização padrão
+	bounds = solara.use_reactive(None)
+	selected_district = solara.use_reactive(None)  # Será inicializado no componente
+
+	layers = solara.use_reactive(basemaps)
+	controls = solara.use_reactive(basecontrols)
+	district_geo_layer = solara.use_reactive(None)
+	coffee_geo_layer = solara.use_reactive(None)
+	points_geo_layer = solara.use_reactive(None)
+	popup_layer = solara.use_reactive(None)
+	geoman_control = solara.use_reactive(None)
+	button_control = solara.use_reactive(None)
+
+	# Estados para marcador interativo
+	is_graph_mode = solara.use_reactive(False)
+	selected_location = solara.use_reactive(None)
+
+	# Dicionário para armazenar camadas API existentes (NDVI, EVI, etc.)
+	api_layers_cache = solara.use_reactive({})
+
+	# Estado global para controlar classes API selecionadas
+	selected_api_classes = solara.use_reactive([])
+	api_trigger = solara.use_reactive(0)
+
+	# Controles de legenda do mapa
+	is_layer_toogled = solara.use_reactive(False)
+	map_legend_control = solara.use_reactive(None)
+	legend_toggle_control = solara.use_reactive(None)
+	legend_visible = solara.use_reactive(True)
+
 	# Estados unificados de loading e erro
 	is_loading = solara.use_reactive(False)
 	error_message = solara.use_reactive(None)
@@ -180,8 +135,32 @@ def Page():
 	api_error = solara.use_reactive(None)
 	municipios_dict = solara.use_reactive({})
 
-	# Definir título da página
-	# solara.Title("Municípios")
+	def toggle_layer(classe: str):
+		"""Callback para alternar visibilidade da camada."""
+		layers_store.toggle_layer(classe)
+		is_layer_toogled.set(True)
+
+	def on_draw(target, action, geo_json):
+		"""Captura quando um marcador é desenhado usando Geoman."""
+		if action != "create":
+			return
+
+		if isinstance(geo_json, list):
+			if not geo_json:
+				return
+			geo_json = geo_json[0]
+
+		if not geo_json:
+			return
+
+		geometry = geo_json.get("geometry", {})
+		if geometry.get("type") == "Point":
+			coords = geometry.get("coordinates", [])
+			if len(coords) == 2:
+				if geoman_control.value:
+					geoman_control.value.current_mode = None
+				if button_control.value and button_control.value.widget:
+					button_control.value.widget.value = False
 
 	# Efeito único para carregar dados essenciais (municípios via WFS)
 	def load_essential_data():
@@ -189,10 +168,8 @@ def Page():
 		is_loading.set(True)
 		error_message.set(None)
 
-		# Carregar dados de municípios
 		geo_data_store.ensure_loaded(mode="wfs")
 
-		# Verificar erro
 		if geo_data_store.error:
 			error_message.set(
 				f"Erro ao carregar dados dos municípios: {geo_data_store.error}"
@@ -201,28 +178,22 @@ def Page():
 			data_ready.set(False)
 			return
 
-		# Aguardar carregamento
 		if geo_data_store.loading:
 			return
 
-		# Verificar se foi carregado com sucesso
 		if not geo_data_store.is_loaded():
 			return
 
-		# Dados carregados com sucesso
 		gdf = geo_data_store.gdf
 		if not gdf.empty:
-			# Criar dicionário municipios_dict
 			mun_dict = {
 				geocodigo: row["nome"]
 				for geocodigo, row in gdf.sort_values("nome").iterrows()
 			}
 			municipios_dict.set(mun_dict)
 
-			# Configurar centro inicial
 			center.value = geo_data_store.center
 
-			# Inicializar selected_district se ainda não foi
 			if selected_district.value is None and mun_dict:
 				selected_district.value = list(mun_dict.keys())[0]
 
@@ -237,7 +208,14 @@ def Page():
 	solara.use_effect(load_essential_data, [geo_data_store.loading])
 
 	def update_district():
-		"""Atualiza o município selecionado (centro, geometrias base)."""
+		"""Atualiza o município selecionado (centro, geometrias base).
+
+		OBS: esta função só dispara o carregamento dos dados de café
+		(coffee_geo_data_store.load_coffee_as_vectortile). A criação do
+		widget VectorTileLayer em si acontece no hook use_memo no nível
+		superior do componente (ver 'criar_coffee_layer' logo abaixo),
+		nunca aqui dentro — hooks não podem ser chamados condicionalmente.
+		"""
 		if not data_ready.value or not selected_district.value:
 			return
 
@@ -251,12 +229,10 @@ def Page():
 				error_message.set("Município selecionado não encontrado")
 				return
 
-			# Buscar dados de café dinamicamente via Vector Tiles
 			coffee_geo_data_store.load_coffee_as_vectortile(
 				cd_mun=str(selected_district.value)
 			)
 
-			# Verificar se houve erro ao carregar dados de café
 			if coffee_geo_data_store.error:
 				error_message.set(coffee_geo_data_store.error)
 				return
@@ -264,11 +240,9 @@ def Page():
 			district_center = district_data.geometry.centroid.iloc[0]
 			district_geojson = district_data.__geo_interface__
 
-			# Atualizar centro (zoom comentado para não forçar reset)
 			center.value = [district_center.y, district_center.x]
 			zoom.value = 11
 
-			# Criar ou atualizar camada do município
 			if district_geo_layer.value is None:
 				district_geo_layer.value = GeoJSON(
 					data=district_geojson,
@@ -283,10 +257,6 @@ def Page():
 			else:
 				district_geo_layer.value.data = district_geojson
 
-			# Criar ou atualizar camada de café para VectorTileLayer
-			coffee_geo_layer.value = coffee_geo_data_store.vectortile_layer
-
-			# Criar Geoman Draw Control com botão customizado se não existir
 			if geoman_control.value is None:
 
 				def on_toggle_draw_mode(is_active):
@@ -311,17 +281,18 @@ def Page():
 			traceback.print_exc()
 
 	def update_overlay_layers():
-		"""Atualiza apenas as camadas WMS baseado na visibilidade e ordem."""
+		"""Atualiza apenas as camadas WMS baseado na visibilidade e ordem.
+
+		OBS: apenas monta a lista final de 'layers' a partir de
+		'visible_layers' (calculado pelo use_memo no nível superior do
+		componente) e das camadas base — não cria nenhum widget aqui.
+		"""
 		try:
-			# Camadas base (município e café)
 			base_layers = basemaps + [
 				layer
 				for layer in [district_geo_layer.value, coffee_geo_layer.value]
 				if layer is not None
 			]
-
-			# Camadas WMS visíveis (já ordenadas pela store)
-			visible_layers = layers_store.get_visible_layers() or []
 
 			layers.value = visible_layers + base_layers
 		except Exception as e:
@@ -335,12 +306,10 @@ def Page():
 		if not is_layer_toogled.value:
 			return
 		try:
-			# Buscar a primeira camada visível na ordem da store (topo da visualização)
 			visible_order = layers_store.get_visible_order()
 			top_layer_name = visible_order[0] if visible_order else None
 
 			if not top_layer_name:
-				# Sem camadas visíveis - remover legenda
 				if (
 					map_legend_control.value
 					and map_legend_control.value in controls.value
@@ -356,7 +325,6 @@ def Page():
 					legend_toggle_control.set(None)
 				return
 
-			# Buscar informações da camada no topo
 			from ..config import CLASSES
 
 			classe_info = None
@@ -367,7 +335,6 @@ def Page():
 			if not classe_info:
 				return
 
-			# Criar HTML da legenda
 			legend_items: list[dict[str, str]] = cast(
 				list[dict[str, str]], classe_info["viz"]
 			)
@@ -392,7 +359,6 @@ def Page():
 
 			legend_widget = HTML(legend_html)
 
-			# Função para alternar visibilidade
 			def on_toggle_legend(visible):
 				legend_visible.set(visible)
 				if map_legend_control.value:
@@ -401,19 +367,16 @@ def Page():
 					else:
 						legend_widget.layout.display = "none"
 
-			# Criar controles de legenda
 			new_legend_control, new_toggle_control = create_map_legend_controls(
 				legend_widget, legend_visible, on_toggle_legend
 			)
 
-			# Remover controles antigos se existirem
 			current_controls = [
 				c
 				for c in controls.value
 				if c != map_legend_control.value and c != legend_toggle_control.value
 			]
 
-			# Adicionar novos controles
 			map_legend_control.set(new_legend_control)
 			legend_toggle_control.set(new_toggle_control)
 			controls.value = current_controls + [new_legend_control, new_toggle_control]
@@ -426,19 +389,55 @@ def Page():
 		finally:
 			is_layer_toogled.set(False)
 
-	# Atualizar legenda quando camada é alternada
+	# ------------------------------------------------------------------
+	# Hooks que criam widgets ipyleaflet: SEMPRE no nível superior do
+	# componente, nunca dentro de update_district/update_overlay_layers
+	# (que rodam condicionalmente) — senão o número de hooks chamados
+	# varia entre renders e o Reacton lança RuntimeError.
+	# ------------------------------------------------------------------
+
+	def criar_coffee_layer():
+		if not selected_district.value:
+			return None
+		params = coffee_geo_data_store.build_vectortile_params(cd_mun=str(selected_district.value))
+		return leaflet.VectorTileLayer(**params)
+
+	coffee_geo_layer.value = solara.use_memo(
+		criar_coffee_layer,
+		dependencies=[selected_district.value],
+	)
+
+	def criar_visible_layers():
+		infos = layers_store.get_visible_layer_infos() or []
+		result = []
+		for info in infos:
+			p = info.get_layer_params(mode="wmts")
+			result.append(
+				leaflet.TileLayer(
+					name=p["name"],
+					url=p["url"],
+					opacity=p["opacity"],
+					tile_size=p["tile_size"],
+				)
+			)
+		return result
+
+	visible_layers = solara.use_memo(
+		criar_visible_layers,
+		dependencies=[layers_store._visible_order.value],
+	)
+
+	# ------------------------------------------------------------------
+
 	solara.use_effect(update_map_legend, [is_layer_toogled.value])
 
-	# Atualizar município quando seleção muda
 	solara.use_effect(update_district, [selected_district.value])
 
-	# Atualizar camadas overlay quando ordem de visibilidade muda
 	solara.use_effect(
 		update_overlay_layers,
 		[layers_store._visible_order.value, coffee_geo_layer.value],
 	)
 
-	# Função para buscar dados de série temporal de um ponto
 	async def fetch_timeseries_data():
 		"""Busca dados de série temporal para a localização selecionada."""
 		if not selected_location.value:
@@ -474,7 +473,6 @@ def Page():
 				case _:
 					api_error.set(f"Erro desconhecido ao buscar dados: {str(e)}")
 
-	# Criar task (será executada quando selected_location mudar)
 	timeseries_task: Task = use_task(
 		fetch_timeseries_data,
 		dependencies=[selected_location.value],
@@ -482,32 +480,23 @@ def Page():
 
 	def on_map_click(**kwargs):
 		"""Callback quando o mapa é clicado - captura coordenadas com precisão total."""
-		# Só processar cliques se estiver em modo gráfico
 		if not is_graph_mode.value:
 			return
 
-		# Verificar se é um clique (type='click')
 		if kwargs.get("type") != "click":
 			return
 
-		# Extrair coordenadas do evento com precisão total
 		coordinates = kwargs.get("coordinates")
 		if coordinates and len(coordinates) == 2:
-			lat, lon = coordinates  # ipyleaflet retorna [lat, lon]
+			lat, lon = coordinates
 
-			# Desativar modo gráfico e botão
 			is_graph_mode.set(False)
 			if button_control.value and button_control.value.widget:
 				button_control.value.widget.value = False
 
-			# Salvar localização no formato [lon, lat]
 			selected_location.value = [lon, lat]
 
-			# Buscar valores do WMS GetFeatureInfo para as camadas visíveis
-			# get_feature_info(lat, lon)
-
 	with solara.Column() as main:
-		# Mapa e controles
 		with solara.ColumnsResponsive(12, medium=[2, 10]):
 			with solara.Column():
 				solara.Select(
@@ -548,7 +537,6 @@ def Page():
 						height="100%",
 					)
 
-					# Mostrar loading sobre o mapa se estiver carregando dados da API
 					if timeseries_task.pending:
 						with solara.Div(
 							style={
@@ -578,19 +566,14 @@ def Page():
 						style={"font-size": "18px", "color": "#666"},
 					)
 
-		# Seção de gráfico de série temporal (fora do ColumnsResponsive)
 		if timeseries_task.finished and timeseries_task.value:
 			with solara.Card(style={"margin": "0 !important"}):
-				# Extrair dados de série temporal
 				result = timeseries_task.value
 				if result.get("status") == "success":
-					point_data_result = result.get("data", [])[
-						0
-					]  # Pegar primeiro ponto
+					point_data_result = result.get("data", [])[0]
 					timeseries = point_data_result.get("timeseries", [])
 
 					if timeseries:
-						# Mostrar coordenadas do ponto
 						metadata = point_data_result.get("metadata", {})
 						coords = metadata.get("coordinates", [])
 						if coords and len(coords) == 2:
@@ -598,7 +581,6 @@ def Page():
 								f"### Série Temporal do Ponto: {coords[1]:}, {coords[0]:}"
 							)
 
-						# Renderizar gráfico
 						PointTimeSeriesChart(timeseries_data=timeseries)
 					else:
 						solara.Warning(
