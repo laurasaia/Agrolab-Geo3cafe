@@ -1,4 +1,4 @@
-name: geo3cafe_v4
+name: geo3cafe
 services:
   mongo:
     image: mongo:latest
@@ -79,4 +79,4 @@ services:
 
 volumes:
   mongo_data:
-    name: mongo_data_v4
+    name: mongo_data

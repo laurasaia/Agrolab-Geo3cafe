@@ -142,7 +142,7 @@ class GeoDataStore:
 			print(f"⚠️ {error_msg}")
 			self._error.set(error_msg)
 			# Resetar flag para permitir retry
-			self._load_attempted = False
+			self._load_attempted.value = False
 			# Manter GeoDataFrame vazio em vez de initialize_empty_gdf para não quebrar a lógica is_loaded
 			self._gdf.set(gpd.GeoDataFrame())
 			self._loading.set(False)
