@@ -89,7 +89,6 @@ def get_feature_info(lat, lon):
 	except Exception as e:
 		print(f"Erro ao buscar GetFeatureInfo: {e}")
 
-
 @solara.component
 def Page():
 	# Setar roi inicial para Earth Engine Layers Store
@@ -134,7 +133,46 @@ def Page():
 	# Estados locais
 	api_error = solara.use_reactive(None)
 	municipios_dict = solara.use_reactive({})
+	show_header = solara.use_reactive(0)
+	show_infos = solara.use_reactive(0)
 
+	def PageHeader():
+		with rv.ExpansionPanels(v_model=show_header.value, on_v_model=show_header.set, style={}):
+			with rv.ExpansionPanel():
+				with rv.ExpansionPanelHeader():
+					with solara.Row(justify="space-between", style={"align-items": "center"}):						
+						solara.Text("Caracterização Ambiental", style={"font-size": "18px", "font-weight": "bold"})
+
+				with rv.ExpansionPanelContent():
+					with solara.Column(style={"gap": "15px"}):
+						solara.Markdown(
+							"""
+							Este painel disponibiliza camadas de caracterização ambiental e monitoramento fenológico para os municípios
+							da Indicação Geográfica Campo das Vertentes. Selecione o município de análise e explore-o. Áreas de cultivo de café são representadas pelas
+							demarcações em preto no mapa, denominadas talhões. Para consultar a série temporal de um desses talhões,
+							aperte o botão no canto superior direito do mapa e clique sobre o local de escolha. Fonte de dados: <a href = "https://geoportal.meioambiente.mg.gov.br/" target="_blank">IDE-SISEMA</a> (2018), <a href = "https://dataspace.copernicus.eu/" target="_blank"> Copernicus</a> (2011-2015), <a href="https://data.inpe.br/bdc/en/home-page-2/" target="_blank">BDC</a> (2017-2026).
+							""",
+							style={"color": "#495057", "font-size": "14px", "line-height": "1.6"},
+						) 
+
+
+	def layer_description():
+		with rv.ExpansionPanels(v_model=show_infos.value, on_v_model=show_infos.set, style={}):
+			with rv.ExpansionPanel():
+				with rv.ExpansionPanelHeader():
+					solara.Text("Definição e Uso de Camadas", style={"font-size": "16px", "font-weight": "semi-bold"})
+				with rv.ExpansionPanelContent():
+					with solara.Column(style={"gap": "0px", "background-color":"#BEC5CC48", "padding": "15px"}):
+							solara.Markdown(
+								"""
+								As camadas disponíveis são: Altitude e Declividade (modelo digital
+								de elevação da região); Orientação das Vertentes (direção de exposição do relevo ao sol); Mapa de Solo (classificação
+								dos tipos de solo); NDVI e Temperatura de Superfície (índices de vegetação e temperatura, obtidos por sensoriamento remoto).
+								
+								""",
+								style={"color": "#495057", "font-size": "14px", "line-height": "1.6"},
+								)
+				
 	def toggle_layer(classe: str):
 		"""Callback para alternar visibilidade da camada."""
 		layers_store.toggle_layer(classe)
@@ -469,7 +507,7 @@ def Page():
 						"Nenhum dado encontrado para as coordenadas fornecidas."
 					)
 				case 500:
-					api_error.set("Erro no servidor ao processar a requisição.")
+					api_error.set("Requisição inválida. Clique em uma área demarcada como café.")
 				case _:
 					api_error.set(f"Erro desconhecido ao buscar dados: {str(e)}")
 
@@ -497,6 +535,13 @@ def Page():
 			selected_location.value = [lon, lat]
 
 	with solara.Column() as main:
+		solara.Style("""
+		.leaflet-control-layers-toggle {
+			width: 56px !important;
+			height: 56px !important;
+		}
+		""")
+		PageHeader()
 		with solara.ColumnsResponsive(12, medium=[2, 10]):
 			with solara.Column():
 				solara.Select(
@@ -565,7 +610,6 @@ def Page():
 						"Carregando Mapa...",
 						style={"font-size": "18px", "color": "#666"},
 					)
-
 		if timeseries_task.finished and timeseries_task.value:
 			with solara.Card(style={"margin": "0 !important"}):
 				result = timeseries_task.value
@@ -624,7 +668,7 @@ def Page():
 						"Habilite o modo de seleção e marque um ponto dentro de uma cafeicultura.",
 						style={"font-size": "14px", "color": "#999"},
 					)
-
+		layer_description()
 	return DataLoadingWrapper(
 		is_loading=is_loading.value,
 		error_message=error_message.value,

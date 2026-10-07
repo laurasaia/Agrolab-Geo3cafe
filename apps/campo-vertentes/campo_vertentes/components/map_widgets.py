@@ -31,9 +31,9 @@ def create_geoman_draw_control_with_button(
 	draw_button = ToggleButton(
 		value=False,
 		tooltip="Clique para ativar o modo de seleção de ponto",
-		icon="bar-chart",  # Ícone de gráfico
+		icon="hand-pointer-o",  # Ícone de gráfico
 		button_style="",
-		layout={"width": "44px", "height": "44px"},
+		layout={"width": "56px", "height": "56px"},
 	)
 
 	def on_button_toggle(change):
@@ -47,7 +47,7 @@ def create_geoman_draw_control_with_button(
 			# Ativar modo de desenho do Geoman
 			geoman_control.current_mode = "draw:Marker"
 		else:
-			draw_button.icon = "bar-chart"  # Ícone gráfico quando inativo
+			draw_button.icon = "hand-pointer-o"  # Ícone gráfico quando inativo
 			draw_button.tooltip = "Clique para ativar o modo de seleção de ponto"
 			# Desativar modo de desenho do Geoman
 			geoman_control.current_mode = None
@@ -63,6 +63,7 @@ def create_geoman_draw_control_with_button(
 	button_control = WidgetControl(
 		widget=draw_button,
 		position="topright",
+		
 	)
 
 	return geoman_control, button_control
@@ -119,7 +120,7 @@ def create_show_graph_control(on_toggle) -> WidgetControl:
 		tooltip="Clique para ativar o modo de seleção de ponto",
 		icon="bar-chart",
 		button_style="",
-		layout={"width": "44px", "height": "44px"},
+		layout={"width": "60px", "height": "56px"},
 	)
 	show_graph_btn.add_class("show-graph-toggle-btn")
 	show_graph_btn.observe(lambda change: on_toggle(change["new"]), "value")
@@ -152,7 +153,7 @@ def create_map_legend_controls(
 		tooltip="Mostrar/Ocultar Legenda",
 		icon="list",
 		button_style="",
-		layout={"width": "44px", "height": "44px"},
+		layout={"width": "56px", "height": "56px"},
 	)
 
 	legend_toggle_btn.add_class("toggle-btn")

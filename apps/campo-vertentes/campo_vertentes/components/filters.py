@@ -12,20 +12,29 @@ def Filters(
 	on_yield_selected,
 	coffee_yield_vars,
 	years,
+	on_open_info,
 ):
 	with solara.Card(
 		style={"margin": "0 !important", "elevation": "2", "border-radius": "8px"}
 	):
 		with solara.Column(gap=5):
 			# Toggle para métrica
-			with solara.Row(style={"flex-wrap": "wrap", "margin-bottom": "10px"}):
-				for key, info in coffee_yield_vars.items():
-					solara.Button(
-						info["label"],
-						color="primary" if yield_filter == key else "default",
-						on_click=lambda k=key: on_yield_selected(k),
-						style={"margin-right": "5px", "margin-bottom": "5px"},
-					)
+			with solara.Row(style={"flex-wrap": "wrap",}, justify="space-between"):
+				with solara.Row(style={"flex=wrap": "wrap", "margin-bottom":"10px",}):
+					for key, info in coffee_yield_vars.items():
+						solara.Button(
+							info["label"],
+							color="primary" if yield_filter == key else "default",
+							on_click=lambda k=key: on_yield_selected(k),
+							style={"margin-right": "5px", "margin-bottom": "5px"},
+						)
+
+				solara.Button(
+					"Sobre a visualização",
+					icon_name="info",
+					on_click=on_open_info,
+					text=True, outlined=True, style={"text-transform": "none", "font-size": "12px"},
+				)
 
 			with solara.Row(style={"flex-wrap": "wrap", "margin-bottom": "10px"}):
 				# Botão Play/Pause

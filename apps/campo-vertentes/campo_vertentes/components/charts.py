@@ -377,9 +377,9 @@ def ModelPerformanceByModel(models_config, bg_color="#e0e0e0"):
 	fig = go.Figure()
 
 	metric_colors = {
-		"accuracy": "#4CAF50",
-		"iou": "#2196F3",
-		"dice": "#FF9800",
+		"accuracy": "#28399B",
+		"iou": "#4275A5",
+		"dice": "#5DA6D6",
 	}
 
 	for metric_key, metric_info in metrics_info.items():

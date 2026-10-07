@@ -60,7 +60,41 @@ def gerar_classes_porcentagem(df, coluna, n_classes=6):
 
 	return df, labels
 
+@solara.component
+def SobreInfo(on_close):
+	about_info = {
+		"Exibição ao longo do tempo": {
+			"desc": "Aperte o botão de play (▶) para ver os dados avançarem ano a ano, de forma automática. A cada passo, os valores dos cartões, as cores do mapa e as barras do gráfico se atualizam sozinhos, e assim você acompanha a evolução cronológica. Aperte novamente o botão (⏸) para pausar no ano que quiser. Também é possível escolher o ano arrastando a barra cronológica.",
+			"color": "#2196F3",
+		},
+		"Variação dos cartões": {
+			"desc": "O número pequeno no canto de cada cartão compara o valor do ano exibido com o do ano anterior, em porcentagem. Verde (▲) significa que o valor aumentou, e vermelho (▼) significa que diminuiu. Por exemplo, ▲ 2,6% indica que o valor está 2,6% maior que no ano anterior.",
+			"color": "#2196F3",
+		},
+	}
 
+	with solara.Card(style={"margin": "0 !important", "border-radius": "8px", "background": "#f5f5f5"}):
+		with solara.Row(justify="space-between", style={"align-items": "center", "background": "#f5f5f5"}):
+			solara.Text("Sobre a visualização", style={"font-size": "16px", "font-weight": "600"})
+			solara.Button(
+				"Fechar",
+				icon_name="close",
+				on_click=on_close,
+				text=True, outlined=True,
+				style={"text-transform": "none", "font-size": "12px", "background-color": "#FFFFFF"},
+			)
+
+		with solara.Div(
+			style={
+				"display": "grid",
+				"grid-template-columns": "repeat(auto-fit, minmax(320px, 1fr))",
+				"gap": "10px",
+			}
+		):
+			for title, info in about_info.items():
+				with solara.Card(style={"margin": "0", "padding": "0px", "border-left": f"3px solid {info['color']}", "background": "white"}):
+					solara.Text(f"{title}: ", style={"font-weight": "600", "font-size": "13px", "margin-bottom": "5px"})
+					solara.Text(info["desc"], style={"font-size": "12px", "color": "#666", "line-height": "1.4"})
 @solara.component
 def Page():
 	merged_gdf = solara.use_reactive(None)
@@ -89,6 +123,31 @@ def Page():
 	is_loading = solara.use_reactive(False)
 	error_message = solara.use_reactive(None)
 	data_ready = solara.use_reactive(False)
+	show_header = solara.use_reactive(0)
+	show_info = solara.use_reactive(False)
+
+	def open_info():
+		is_playing.set(False)
+		show_info.set(True)
+		
+	def PageHeader():
+		with rv.ExpansionPanels(v_model=show_header.value, on_v_model=show_header.set, style={}):
+			with rv.ExpansionPanel():
+				with rv.ExpansionPanelHeader():
+					with solara.Row(justify="space-between", style={"align-items": "center","margin-right": "8px"}):
+						solara.Text("Campo das Vertentes e Cafeicultura", style={"font-size": "18px", "font-weight": "bold"})
+						#solara.Text("Ano: 1988-2024", style={"font-size": "16px", "color": "#666"})
+				with rv.ExpansionPanelContent():
+					with solara.Column(style={"gap": "15px",}):
+						solara.Markdown(
+							"""
+							Este painel apresenta área plantada, área colhida, quantidade produzida e rendimento médio do café
+							nos municípios da Indicação Geográfica Campo das Vertentes. Para visualizar os dados de um município específico, selecione-o
+							clicando diretamente no mapa. Assim, o gráfico de série temporal abaixo também será atualizado automaticamente com base na sua escolha. Fonte de dados: <a href = "https://sidra.ibge.gov.br/home/pimpfbr/brasil" target="_blank">IBGE/SIDRA</a> (1988-2024), <a href="https://data.inpe.br/bdc/en/home-page-2/" target="_blank">BDC</a> (2017-2026).
+							""",
+							style={"color": "#495057", "font-size": "14px", "line-height": "1.6"},
+						)
+
 
 	def preprocess_all_years(merged_df: pd.DataFrame) -> Dict[int, pd.DataFrame]:
 		"""
@@ -476,23 +535,25 @@ def Page():
 		return cleanup
 
 	solara.use_effect(cleanup_on_unmount, [])
-
 	with solara.Column(style={"flex-grow": "1", "gap": "15px"}) as main:
-		# Filtros de controle
-		Filters(
-			is_playing=is_playing.value,
-			on_toogle_play=lambda: is_playing.set(not is_playing.value),
-			is_data_ready=is_data_ready.value,
-			year=year.value,
-			on_year_selected=year.set,
-			yield_filter=yield_filter.value,
-			on_yield_selected=lambda key: yield_filter.set(key),
-			coffee_yield_vars=COFFEE_YIELD_VARS,
-			years=years.value,
-		)
-
-		# Cards de Estatísticas
-		StatCardsRow(merged_gdf.value, year.value, COFFEE_YIELD_VARS)
+		PageHeader()
+		with solara.Column():
+			if show_info.value:
+				SobreInfo(on_close=lambda: show_info.set(False))
+			else:
+				Filters(
+					is_playing=is_playing.value,
+					on_toogle_play=lambda: is_playing.set(not is_playing.value),
+					is_data_ready=is_data_ready.value,
+					year=year.value,
+					on_year_selected=year.set,
+					yield_filter=yield_filter.value,
+					on_yield_selected=lambda key: yield_filter.set(key),
+					coffee_yield_vars=COFFEE_YIELD_VARS,
+					years=years.value,
+					on_open_info=open_info,
+				)
+				StatCardsRow(merged_gdf.value, year.value, COFFEE_YIELD_VARS)
 
 		# Dados da região em Mapa e Gráfico de Barras
 		with solara.Card(margin=0, style={"padding": "0 10px", "position": "relative"}):

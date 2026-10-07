@@ -38,7 +38,7 @@ def ModelComparionColumn(
 	opacity_left, opacity_right,
 	on_model_change_cb, on_opacity_change_cb,
 ):
-	with solara.Column(style={"gap": "10px"}):
+	with solara.Column(style={"gap": "10px", "padding-top":"0px"}):
 		current_value = selected_model_left.value if side == "left" else selected_model_right.value
 		other_value = selected_model_right.value if side == "left" else selected_model_left.value
 
@@ -69,26 +69,6 @@ def ModelComparionColumn(
 			on_value=lambda v: on_opacity_change_cb(side, v),
 			min=0.0, max=1.0, step=0.1,
 		)
-
-
-@solara.component
-def PageHeader():
-	with solara.Card(style={"margin": "0 !important"}):
-		with solara.Column(style={"gap": "15px"}):
-			with solara.Row(justify="space-between", style={"align-items": "center"}):
-				solara.Text("Bom Sucesso", style={"font-size": "24px", "font-weight": "bold"})
-				solara.Text("Ano: 2022", style={"font-size": "16px", "color": "#666"})
-
-			solara.Markdown(
-				"""
-                No QGIS foi gerado um conjunto amostral com 5 mil pontos aleatórios sobre a área do município de Bom Sucesso,
-                sendo 2500 pontos para cada uma das classes "Não Café" e "Café". Esse conjunto serviu de base para a criação
-                das amostras das séries temporais utilizadas no treinamento dos modelos, que foram baseados em dados de imagens
-                Sentinel-2 (obtidas pelo <a href="https://data.inpe.br/bdc/en/home-page-2/", target="_blank">Brazil Data Cube</a>) dos anos de 2018 a 2022.
-                """,
-				style={"color": "#495057", "font-size": "14px", "line-height": "1.6"},
-			)
-
 
 @solara.component
 def ModelComparisonHeader(
@@ -209,10 +189,41 @@ def Page():
 
 	show_info = solara.use_reactive(False)
 	view_mode = solara.use_reactive("graficos")
+	show_header = solara.use_reactive(0)
 
-	# --- Funções que dependem de reactive: closures locais ---
+	def PageHeader():
+		with rv.ExpansionPanels(v_model=show_header.value, on_v_model=show_header.set, style={}):
+			with rv.ExpansionPanel():
+				with rv.ExpansionPanelHeader():
+					with solara.Row(justify="space-between", style={"align-items": "center"}):
+						solara.Text("Bom Sucesso e o Uso da Terra", style={"font-size": "18px", "font-weight": "bold"})
+						solara.Text("Ano: 2022", style={"font-size": "16px", "color": "#666"})
+
+				with rv.ExpansionPanelContent():
+					with solara.Column(style={"gap": "15px"}):
+						solara.Markdown(
+							 """
+							Este painel compara mapas de uso da terra com café gerados por diferentes modelos de aprendizado de máquina
+							(XGBoost, Random Forest, TempCNN e LightTAE). Os modelos foram treinados e testados apenas na área do município
+							de Bom Sucesso, parte da Indicação Geográfica Campo das Vertentes. Escolha dois modelos para exibição no mapa e
+							compare como cada um identifica as áreas de café, junto aos indicadores de desempenho.
+							""",
+							style={"color": "#495057", "font-size": "14px", "line-height": "1.6"},
+						)
+					with solara.Column(style={"gap": "0px", "background-color":"#BEC5CC48", "padding": "15px"}):
+							solara.Markdown(
+								"""
+								Para ensinar os modelos a reconhecer café, foram sorteados 5 mil pontos no mapa usando o QGIS, 
+								um programa gratuito para trabalhar com mapas e dados geográficos: 2.500 em áreas de café e 2.500
+								em áreas sem café. Para cada ponto, foram usadas imagens do satélite Sentinel-2, de 2018 a 2022,
+								para acompanhar como aquele lugar muda ao longo dos anos. Fonte de dados:
+								<a href="https://data.inpe.br/bdc/en/home-page-2/" target="_blank">BDC</a> (2018-2022).
+								""",
+								style={"color": "#495057", "font-size": "14px", "line-height": "1.6"},
+							)
+				
+
 	def load_model_layer(model_id: str) -> leaflet.TileLayer:
-		# TODO: Refatorar para VectorTileLayer ao invés de TileLayer
 		print(f"🚀 Carregando camada do modelo: {model_id}")
 		wfs_layer_name = str(BS_COFFEE_YIELD_CLASSES[model_id]["wfs_layer"])
 		url = WMTS_TEMPLATE_URL.replace("<LAYER_NAME>", wfs_layer_name).replace("<TILE_FORMAT>", "image/png")
@@ -359,7 +370,7 @@ def Page():
 	with solara.Column(style={"flex": "1"}) as main:
 		PageHeader()
 
-		with solara.ColumnsResponsive(12, large=[4, 8], xlarge=[3, 9]):
+		with solara.ColumnsResponsive(12, large=[2, 10], xlarge=[2,10]):
 			ModelComparisonHeader(
 				selected_model_left=selected_model_left, selected_model_right=selected_model_right,
 				opacity_left=opacity_left, opacity_right=opacity_right,
@@ -367,7 +378,7 @@ def Page():
 				on_swap_cb=swap_models,
 			)
 
-			with solara.Column(style={"isolation": "isolate", "height": "100%", "min-height": "500px"}):
+			with solara.Column(style={"isolation": "isolate", "max-height": "none", "height":"700px","min-height": "600px", "width": "100%", "max-width": "none"}):
 				IGMap(
 					center=center.value, on_center=center.set,
 					zoom=zoom.value, on_zoom=zoom.set,

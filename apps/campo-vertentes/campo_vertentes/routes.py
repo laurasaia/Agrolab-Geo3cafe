@@ -15,9 +15,9 @@ class RouteConfig(TypedDict):
 
 # Routes dictionary mapping paths to route configurations
 ROUTES: dict[str, RouteConfig] = {
-	"/": {"name": "Campo das Vertentes", "icon": "mdi-map-marker-radius"},
-	"01_municipios": {"name": "Municípios", "icon": "mdi-city"},
-	"02_classificacoes": {"name": "Classificações", "icon": "mdi-map-outline"},
+	"/": {"name": "Painel de Produção Agrícola", "icon": "mdi-map-marker-radius"},
+	"01_municipios": {"name": "Painel Ambiental", "icon": "mdi-pine-tree"},
+	"02_classificacoes": {"name": "Painel de Classificação de Uso da Terra", "icon": "mdi-map-outline"},
 }
 
 
